@@ -2,7 +2,7 @@
 
 A [Home Assistant](https://www.home-assistant.io/) (HA) custom component for the ZTE H388X (TIM HUB+) router.
 
-![Alt text](img/example_dashboard.png?raw=true "Example dashboard")\
+![Alt text](img/example_dashboard.png?raw=true "Example dashboard")
 
 ## Features
 
