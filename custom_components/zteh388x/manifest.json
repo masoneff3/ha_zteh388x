@@ -1,0 +1,13 @@
+{
+  "domain": "zteh388x",
+  "name": "ZTE H388X (TIM HUB+)",
+  "version": "1.0",
+  "integration_type": "device",
+  "codeowners": ["@masoneff3"],
+  "documentation": "https://github.com/masoneff3/ha_zteh388x",
+  "issue_tracker": "https://github.com/masoneff3/ha_zteh388x/issues",
+  "dependencies": [],
+  "requirements": ["requests"],
+  "config_flow": false,
+  "iot_class": "local_polling"
+}

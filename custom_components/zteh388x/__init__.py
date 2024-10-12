@@ -1,0 +1,1 @@
+"""Init file for ZTE H388X (TIM HUB+) Home Assistant custom component."""
