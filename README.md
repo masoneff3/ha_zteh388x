@@ -394,7 +394,7 @@ logger:
 
 ## Tested on
 
-- Home Assistant (Container) 2024.9.x - 2024.11.x
+- Home Assistant (Container) 2024.9.x - 2024.12.x
 - ZTE H388X - HW: V10.0.0 SW: AGZHP_1.4.0
 
 ## Possible improvements
