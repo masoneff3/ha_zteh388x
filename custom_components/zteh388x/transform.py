@@ -1,6 +1,6 @@
 # ZTE H388X (TIM HUB+) Custom Component for Home Assistant
 # Author: masoneff3 | https://github.com/masoneff3
-# V1.0 - 10/08/2024
+# V2.0 - 21/07/2026
 
 # transform.py
 
@@ -14,6 +14,16 @@ def transform_uptime(para_name, para_value):
         except (ValueError, TypeError) as e:
             _LOGGER.error(f"Error converting uptime value '{para_value}' for parameter '{para_name}': {e}")
     return para_value
+
+def derive_uptime_days(para_name, para_value):
+    if 'uptime' not in para_name.lower():
+        return None
+    try:
+        days_value = round(float(para_value) / 24, 2)  # para_value is already in hours
+    except (ValueError, TypeError) as e:
+        _LOGGER.error(f"Error deriving uptime days from '{para_value}' for parameter '{para_name}': {e}")
+        return None
+    return f"{para_name}_days", days_value
 
 def transform_bytes(para_name, para_value):
     if 'bytes' in para_name.lower():
