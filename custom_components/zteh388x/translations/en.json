@@ -1,0 +1,25 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "ZTE H388X (TIM HUB+)",
+        "description": "Enter your router's connection details.",
+        "data": {
+          "host": "Host",
+          "username": "Username",
+          "password": "Password",
+          "linetype": "Line type: 'eth' for FTTH (SFP/Ethernet), 'dsl' for xDSL (ADSL/VDSL)",
+          "name": "Name (optional)",
+          "interval": "Update interval (seconds)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect to the router. Check the host and try again.",
+      "unknown": "Unexpected error while testing the connection."
+    },
+    "abort": {
+      "already_configured": "This router is already configured."
+    }
+  }
+}
