@@ -1,6 +1,6 @@
 # ZTE H388X (TIM HUB+) Custom Component for Home Assistant
 # Author: masoneff3 | https://github.com/masoneff3
-# V2.0 - 21/07/2026
+# V2.1 - 10/08/2026
 
 # sensor.py
 
@@ -82,12 +82,14 @@ def interface_friendly_name(inst_id):
 class ZTESensor(SensorEntity):
     """Set up sensor entities."""
 
+    _attr_has_entity_name = True  # HA combines this with the router device's name for display    
+    
     def __init__(self, inst_id, param_name, param_value, router_data):
         self._inst_id = interface_friendly_name(inst_id)
         self._param_name = param_name
         self._router_data = router_data  # Store router_data object to allow for sensors update
-        self._name = f"zteh388x_{router_data.host_slug}_{self._inst_id}_{param_name.lower()}"
-        self._unique_id = self._name  # Assign a unique ID for each entity
+        self._entity_name = f"zteh388x_{self._inst_id}_{param_name.lower()}"  # Displayed name (no host segment)
+        self._unique_id = f"zteh388x_{router_data.host_slug}_{self._inst_id}_{param_name.lower()}"  # Assign a unique ID for each entity (internal only, never shown to the user)
         self._previous_value = None  # Store the previous value for byte sensors
         self._cumulative_value = None  # Store the cumulative value for byte sensors
         self._state = param_value
@@ -102,7 +104,7 @@ class ZTESensor(SensorEntity):
     @property
     def name(self):
         """Return the name of the sensor."""
-        return self._name
+        return self._entity_name
 
     @property
     def device_info(self):
