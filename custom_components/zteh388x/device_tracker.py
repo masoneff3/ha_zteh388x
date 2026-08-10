@@ -1,11 +1,11 @@
 # ZTE H388X (TIM HUB+) Custom Component for Home Assistant
 # Author: masoneff3 | https://github.com/masoneff3
-# V2.0 - 21/07/2026
+# V2.1 - 10/08/2026
 
 # device_tracker.py
 
 from homeassistant.components.device_tracker import ScannerEntity, SourceType
-from homeassistant.helpers.device_registry import format_mac
+from homeassistant.helpers.device_registry import CONNECTION_NETWORK_MAC, format_mac
 from homeassistant.helpers.entity import DeviceInfo
 
 from .const import DOMAIN
@@ -49,6 +49,8 @@ async def async_setup_entry(hass, entry, async_add_entities):
 class ZTEScannerEntity(ScannerEntity):
     """Represent a device tracked via the router's connected Wi-Fi client list."""
 
+    _attr_has_entity_name = True   
+    
     def __init__(self, mac, device, router_data):
         self._router_data = router_data
         self._mac = mac
@@ -64,8 +66,8 @@ class ZTEScannerEntity(ScannerEntity):
 
     @property
     def name(self):
-        """Return the device's hostname, as reported by the router."""
-        return self._hostname
+        """Return None so HA uses the device's own name."""
+        return None
 
     @property
     def source_type(self):
@@ -97,6 +99,7 @@ class ZTEScannerEntity(ScannerEntity):
         """Group this tracker under its own device, linked to the router."""
         return DeviceInfo(
             identifiers={(DOMAIN, self._mac)},
+            connections={(CONNECTION_NETWORK_MAC, self._mac)},
             name=self._hostname,
             via_device=(DOMAIN, self._router_data.host),
         )
