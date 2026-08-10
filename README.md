@@ -370,7 +370,7 @@ The integration creates a `device_tracker` entity for every device currently con
 
 ### (Optional) Interface friendly names
 
-Entity IDs follow the pattern `zteh388x_<host>_<interface>_<parameter>`, e.g. `zteh388x_19216811_igd.wd2.wcd1.wcppp1_uptime` for a router at `192.168.1.1`.
+Entity IDs follow the pattern `zteh388x_<interface>_<parameter>`, e.g. `zteh388x_igd.wd2.wcd1.wcppp1_uptime`.
 
 By default, the `<interface>` segment looks like `igd.wd2.wcd1.wcppp1`, as these are the names provided by the router's APIs. Here, `wdX` represents the interface (e.g., DSL, SFP, Ethernet), while `wcd1.wcppp1` corresponds to the `INTERNET_ETH` section in the router's GUI. The following mapping has been defined; however, please note that in your case it might be different.
 
@@ -427,6 +427,11 @@ logger:
 - ...
 
 ## Changelog
+
+### 2.1
+
+- MAC address now visible in "Device info"
+- Host was removed from entity name
 
 ### 2.0
 
