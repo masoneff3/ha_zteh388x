@@ -1,6 +1,6 @@
 # ZTE H388X (TIM HUB+) Custom Component for Home Assistant
 # Author: masoneff3 | https://github.com/masoneff3
-# V2.0 - 21/07/2026
+# V2.1 - 10/08/2026
 
 # transform.py
 
