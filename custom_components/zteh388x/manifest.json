@@ -1,7 +1,7 @@
 {
   "domain": "zteh388x",
   "name": "ZTE H388X (TIM HUB+)",
-  "version": "2.1",
+  "version": "2.2",
   "integration_type": "device",
   "codeowners": ["@masoneff3"],
   "documentation": "https://github.com/masoneff3/ha_zteh388x",
