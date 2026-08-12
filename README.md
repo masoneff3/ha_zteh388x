@@ -351,7 +351,7 @@ A [Home Assistant](https://www.home-assistant.io/) (HA) custom component for the
 	- **Update interval** (optional): sensors update interval in seconds; default is 120 seconds. To avoid potential rate-limiting or lockouts, use an interval of 30 seconds or more.
 
 > [!IMPORTANT]
-> If you're upgrading from version 1.0 to 2.0, see [Breaking Changes](#breaking-changes-v20) in the changelog below.
+> If you're upgrading from version 1.0 to 2.x, see [Breaking Changes](#breaking-changes-v20) in the changelog below.
 
 ### (Optional) Multiple routers
 
@@ -427,6 +427,10 @@ logger:
 - ...
 
 ## Changelog
+
+### 2.2
+
+- Minor code optimization
 
 ### 2.1
 
