@@ -57,7 +57,7 @@ class ZTEScannerEntity(ScannerEntity):
         self._hostname = device.get('HostName') or mac
         self._ip_address = device.get('IPAddress')
         self._connected = True
-        self._unique_id = f"zteh388x_{router_data.host_slug}_devicetracker_{mac.replace(':', '')}"
+        self._unique_id = f"{DOMAIN}_{router_data.host_slug}_devicetracker_{mac.replace(':', '')}"
 
     @property
     def unique_id(self):
