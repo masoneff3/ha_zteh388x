@@ -1,6 +1,6 @@
 # ZTE H388X (TIM HUB+) Custom Component for Home Assistant
 # Author: masoneff3 | https://github.com/masoneff3
-# V2.1 - 10/08/2026
+# V2.2 - 12/08/2026
 
 # device_tracker.py
 
