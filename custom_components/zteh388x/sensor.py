@@ -31,7 +31,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
             inst_id = instance.get('_InstID')
             for param_name, param_value in instance.items():
                 if param_name != '_InstID' and param_name != 'LastChange':  # Skip the '_InstID' and 'LastChange' entities
-                    sensor_key = f"zteh388x_{inst_id}_{param_name.lower()}"  # Local dedup key, not the entity's unique_id
+                    sensor_key = f"{DOMAIN}_{inst_id}_{param_name.lower()}"  # Local dedup key, not the entity's unique_id
                     # Add the new sensor data to the dictionary
                     updated_sensor_data[sensor_key] = (inst_id, param_name, param_value)
         # Iterate through the new data and update the sensors
@@ -88,8 +88,8 @@ class ZTESensor(SensorEntity):
         self._inst_id = interface_friendly_name(inst_id)
         self._param_name = param_name
         self._router_data = router_data  # Store router_data object to allow for sensors update
-        self._entity_name = f"zteh388x_{self._inst_id}_{param_name.lower()}"  # Displayed name (no host segment)
-        self._unique_id = f"zteh388x_{router_data.host_slug}_{self._inst_id}_{param_name.lower()}"  # Assign a unique ID for each entity (internal only, never shown to the user)
+        self._entity_name = f"{DOMAIN}_{self._inst_id}_{param_name.lower()}"  # Displayed name (no host segment)
+        self._unique_id = f"{DOMAIN}_{router_data.host_slug}_{self._inst_id}_{param_name.lower()}"  # Assign a unique ID for each entity (internal only, never shown to the user)
         self._previous_value = None  # Store the previous value for byte sensors
         self._cumulative_value = None  # Store the cumulative value for byte sensors
         self._state = param_value
