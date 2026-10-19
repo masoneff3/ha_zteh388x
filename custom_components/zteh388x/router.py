@@ -59,6 +59,12 @@ class RouterData:
         """Register a callback to run (in the executor thread) after every successful refresh."""
         self._listeners.append(callback)
 
+        def remove_listener():
+            if callback in self._listeners:
+                self._listeners.remove(callback)
+
+        return remove_listener
+
     def update(self):
         """Update data from the router, skipping if a previous update is still running."""
         if not self._update_lock.acquire(blocking=False):
@@ -90,7 +96,7 @@ class RouterData:
             # Always release the router's single admin session, however this cycle went
             self.logout()
         self.available = True
-        for listener in self._listeners:
+        for listener in tuple(self._listeners):
             try:
                 listener()
             except Exception:
