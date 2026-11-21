@@ -5,6 +5,7 @@
 # device_tracker.py
 
 from homeassistant.components.device_tracker import ScannerEntity, SourceType
+from homeassistant.core import callback
 from homeassistant.helpers.device_registry import CONNECTION_NETWORK_MAC, format_mac
 from homeassistant.helpers.entity import DeviceInfo
 
@@ -14,17 +15,17 @@ async def async_setup_entry(hass, entry, async_add_entities):
     """Set up ZTE H388X (TIM HUB+) device trackers from a config entry."""
     router_data = hass.data[DOMAIN][entry.entry_id]
 
-    def threadsafe_add_entities(new_entities, update_before_add=False):
-        """Schedule async_add_entities on the event loop; called from a worker thread."""
-        hass.add_job(async_add_entities, list(new_entities), update_before_add)
-
     trackers_by_mac = {}  # Dictionary to store tracker entities by MAC address
+    active = True
 
-    def handle_update():
-        """Create/update tracker entities from router_data.access_devices (runs in the executor)."""
+    @callback
+    def process_update(devices):
+        """Create and update trackers on the Home Assistant event loop."""
+        if not active:
+            return
         seen_macs = set()
         new_trackers = []
-        for device in router_data.access_devices:
+        for device in devices:
             raw_mac = device.get('MACAddress')
             if not raw_mac:
                 continue
@@ -41,18 +42,33 @@ async def async_setup_entry(hass, entry, async_add_entities):
             if mac not in seen_macs:
                 tracker.mark_disconnected()
         if new_trackers:
-            threadsafe_add_entities(new_trackers, True)
+            async_add_entities(new_trackers)
 
-    router_data.add_listener(handle_update)
+    def handle_update():
+        """Copy the worker snapshot and schedule it on the event loop."""
+        hass.add_job(process_update, [dict(device) for device in router_data.access_devices])
+
+    remove_listener = router_data.add_listener(handle_update)
+
+    @callback
+    def stop_updates():
+        """Unsubscribe and ignore any updates queued before unload."""
+        nonlocal active
+        active = False
+        remove_listener()
+
+    entry.async_on_unload(stop_updates)
 
 
 class ZTEScannerEntity(ScannerEntity):
     """Represent a device tracked via the router's connected Wi-Fi client list."""
 
     _attr_has_entity_name = True   
+    _attr_should_poll = False
     
     def __init__(self, mac, device, router_data):
         self._router_data = router_data
+        self._added_to_hass = False
         self._mac = mac
         self._hostname = device.get('HostName') or mac
         self._ip_address = device.get('IPAddress')
@@ -114,9 +130,21 @@ class ZTEScannerEntity(ScannerEntity):
         self._connected = True
         self._hostname = device.get('HostName') or self._hostname
         self._ip_address = device.get('IPAddress')
-        self.schedule_update_ha_state()
+        if self._added_to_hass:
+            self.async_write_ha_state()
 
     def mark_disconnected(self):
         """Mark a previously-seen device as no longer connected."""
         self._connected = False
-        self.schedule_update_ha_state()
+        if self._added_to_hass:
+            self.async_write_ha_state()
+
+    async def async_added_to_hass(self):
+        """Start publishing state after Home Assistant registers this entity."""
+        await super().async_added_to_hass()
+        self._added_to_hass = True
+
+    async def async_will_remove_from_hass(self):
+        """Stop publishing state before Home Assistant removes this entity."""
+        self._added_to_hass = False
+        await super().async_will_remove_from_hass()
