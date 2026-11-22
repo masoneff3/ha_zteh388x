@@ -416,7 +416,7 @@ logger:
 
 ## Tested on
 
-- Home Assistant (Container) 2024.9.x - 2026.7.x
+- Home Assistant (Container) 2024.9.x - 2026.11.x
 - ZTE H388X - HW: V10.0.0 SW: AGZHP_1.4.0 - AGZHP_1.4.4
 
 ## Possible improvements
@@ -427,6 +427,13 @@ logger:
 - ...
 
 ## Changelog
+
+### 2.3
+
+- Fixed a bug where connected devices could cause repeated _AttributeError_ (issue #3)
+- Devices that are offline when Home Assistant restarts now show _"not home"_ instead of _"unavailable"_
+- Fixed 2 deprecation warnings (2027.8.0)
+- Added Italian translation for the config flow
 
 ### 2.2
 
