@@ -1,6 +1,6 @@
 # ZTE H388X (TIM HUB+) Custom Component for Home Assistant
 # Author: masoneff3 | https://github.com/masoneff3
-# V2.1 - 10/08/2026
+# V2.3 - 22/11/2026
 
 # router.py
 
@@ -96,7 +96,7 @@ class RouterData:
             # Always release the router's single admin session, however this cycle went
             self.logout()
         self.available = True
-        for listener in tuple(self._listeners):
+        for listener in tuple(self._listeners):  # Snapshot so a listener can safely unsubscribe during iteration
             try:
                 listener()
             except Exception:
